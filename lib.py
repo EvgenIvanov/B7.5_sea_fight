@@ -9,6 +9,7 @@ class Dot:
     # def __str__(self):
     #     return self.__x, self.__y
 
+
 class Ship:
     def __init__(self, Dot, rang = 1, orient = False):
         self.dot = Dot          # координаты носа корабля
@@ -18,34 +19,44 @@ class Ship:
         else:
             self.orient = True
 
-
     def getShip(self):          # по параметрам корабля возвращает набор его точек горизонтально расположенных или вертикально
         if not self.orient: #self.orient == 'h':
             return [(i, self.dot.y) for i in range(self.dot.x, self.dot.x + self.rang)]
         else:
             return [(self.dot.x, i) for i in range(self.dot.y, self.dot.y + self.rang)]
 
+
 class Board():
     def __init__(self, size = 6):
+        self.ships = []
+        self.deck = []
         self.size = size                                                                # размерность игрового поля
-        self.deck = [[u'\u2022' for y in range(size)] for x in range(size)]             # точки на доске
-        self.dots = set([(x, y) for y in range(self.size) for x in range(self.size)])   # точки плоскости доски для определения возможности парковки корабля
+        self.dots = []
         if size == 6:
-            self.ships = [3,2,2,1,1,1,1]
+            self.shipsRang = [3,2,2,1,1,1,1]
             attempt = 2000
         elif size == 10:
-            self.ships = [4,3,3,2,2,2,1,1,1,1]
+            self.shipsRang = [4,3,3,2,2,2,1,1,1,1]
             attempt = 5000
-        tAtt = 0
-        for rang in self.ships:
-            while True:
-                park = self.addShip(Ship(Dot(randint(0, size), randint(0, size)), rang, randint(0,1)))
-                tAtt += 1
-                if park or tAtt > attempt:
+        while len(self.ships) != len(self.shipsRang):
+            self.ships.clear()
+            self.dots.clear()
+            self.deck.clear()
+            self.dots = set([(x, y) for y in range(self.size) for x in range(self.size)])   # точки плоскости доски для определения возможности парковки корабля
+            self.deck = [[u'\u2022' for y in range(size)] for x in range(size)]             # точки на доске
+            for rang in self.shipsRang:
+                tAtt = 0
+                while True:
+                    ship = Ship(Dot(randint(0, size), randint(0, size)), rang, randint(0,1))
+                    park = self.addShip(ship)
+                    tAtt += 1
+                    if park or tAtt > attempt:
+                        if park:
+                            self.ships.append(ship)
+                        break
+                if tAtt > attempt:
+                    print('Exit loop. Ship parking is bad.')
                     break
-            if tAtt > attempt:
-                print('Exit loop. Ship parking ship is bad.')
-                break
 
     @staticmethod
     def emptyDots(Dot):
@@ -77,11 +88,16 @@ class Board():
             self.dots.difference_update(sh) # удаление точек корабля из массива dots
         return ret
     
-    def show(self, hide = 0):
-        str_ = [str(i+1)+' ' for i in range(self.size)]
-        print(f"   {''.join(str_)} " + 'X'+'×' + u'\u2573' + '¤'+u'\u2022\u25E6\u00B0\u03BF')
-        for i,row in enumerate(self.deck):
-            print(f' {chr(65+i)} ' + ' '.join(row)) #' ' + row + '\n')
+    @staticmethod
+    def show(own, ali):
+        print('\n   Your board             Opponent board')
+        print('   ----------             --------------')
+        str_ = [str(i+1)+' ' for i in range(own.size)]
+        print(f"   {''.join(str_)}             {''.join(str_)}") #" + 'X'+'×' + u'\u2573' + '¤'+u'\u2022\u25E6\u00B0\u03BF')
+        for i,row in enumerate(own.deck):
+            aliRow = ali.deck[i]
+            print(f' {chr(65+i)} ' + ' '.join(row) + f'            {chr(65+i)} ' + ' '.join(aliRow)) #.replace(u'\u2589',u'\u2022')) #' ' + row + '\n')
+            # print(row)
         print()
         # bordersize = 6
         
