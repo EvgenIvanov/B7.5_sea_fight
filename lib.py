@@ -5,52 +5,38 @@ class Dot:
     
     def __str__(self):
         return self.__x, self.__y
-        # return '{} {}'.format(self.x, self.y)
 
 class Ship:
     def __init__(self, Dot, rang = 1, orient = 'h'):
-        self.dot = Dot      # координаты носа корабля
-        self.rang = rang
-        self.orient = orient
+        self.dot = Dot          # координаты носа корабля
+        self.rang = rang        # ранг корабля (кол-во палуб)
+        self.orient = orient    # ориентация корабля на доске (h/w)
 
     def getShip(self):
-        # tDots = []
         if self.orient == 'h':
             return [(i, self.dot.y) for i in range(self.dot.x, self.dot.x + self.rang)]
-            # for i in range(self.dot.x + self.rang):
-            #     tDots.append((i, self.dot.y))
         else:
             return [(self.dot.x, i) for i in range(self.dot.y, self.dot.y + self.rang)]
-        #     for i in range(self.dot.y + self.rang):
-        #         tDots.append((self.dot.x, i))
-        # return tDots
 
 class Board():
-    dots = set()
     def __init__(self, size):
-        self.size = size
-        self.deck = [[u'\u2022' for y in range(size)] for x in range(size)]
-        # self.dots [(x,x) for x in range(size)]
-        for x in range(6):
-            for y in range(6):
-                self.dots.add((x, y))
+        self.size = size    # размерность игрового поля
+        self.deck = [[u'\u2022' for y in range(size)] for x in range(size)]             # точки на доске
+        self.dots = set([(x, y) for y in range(self.size) for x in range(self.size)])   # точки плоскости доски для определения возможности парковки корабля
 
     @staticmethod
-    def emptyDot(Dot):
+    def emptyDots(Dot):
         x, y = Dot[0], Dot[1]
         return [
             (x-1, y-1), (x, y-1), (x+1, y-1),
             (x-1, y), (x, y), (x+1, y),
             (x-1, y+1), (x, y+1), (x+1, y+1)
         ]
-        # return tDots
 
     def __add(self, Dot, status):
-        # if self.deck[Dot[1]][Dot[0]] == u'\u2022':
-            # self.deck[Dot[1]][Dot[0]] = status
         if self.deck[Dot[1]][Dot[0]] == u'\u2022':
             self.deck[Dot[1]][Dot[0]] = status
-            tDots = self.emptyDot(Dot)
+            tDots = self.emptyDots(Dot)
             self.dots.difference_update(tDots)
             print('self.dots='+str(len(self.dots)))
 
