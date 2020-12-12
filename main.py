@@ -4,18 +4,17 @@ from lib import *
 # d = Dot(1, 1)
 # print(d)
  
-sh = Ship(Dot(0,0),3,'w')
-b = Board(6)
+
+b = Board()
 b.show()
-# print(b.pointStatus.star)
-# b.deck[5][5] = 'X'
-# b.add(Dot(5, 5),'X')
-# b.add(Dot(4, 4),'X')
-print(b.addShip(sh))
-b.show()
-sh = Ship(Dot(0,3))
-print(b.addShip(sh))
-b.show()
+# sh = Ship(Dot(0,0),3,'w')
+# print
+# b.addShip(Ship(Dot(0,0),3,'w'))
+# b.show()
+# sh = Ship(Dot(2,4))
+# # print(b.addShip(sh))
+# b.addShip(sh)
+# b.show()
 # print(sh.getShip())
 # shP = set(sh.getShip()) #(1,'a'))
 # print(shP)

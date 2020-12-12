@@ -1,3 +1,5 @@
+from random import randint
+
 class Dot:
     ## фактическая точка игрового поля 
     def __init__(self, x, y):
@@ -8,22 +10,42 @@ class Dot:
     #     return self.__x, self.__y
 
 class Ship:
-    def __init__(self, Dot, rang = 1, orient = 'h'):
+    def __init__(self, Dot, rang = 1, orient = False):
         self.dot = Dot          # координаты носа корабля
         self.rang = rang        # ранг корабля (кол-во палуб)
-        self.orient = orient    # ориентация корабля на доске (h/w)
+        if not orient:
+            self.orient = False    # ориентация корабля на доске (h/w)
+        else:
+            self.orient = True
 
-    def getShip(self):
-        if self.orient == 'h':
+
+    def getShip(self):          # по параметрам корабля возвращает набор его точек горизонтально расположенных или вертикально
+        if not self.orient: #self.orient == 'h':
             return [(i, self.dot.y) for i in range(self.dot.x, self.dot.x + self.rang)]
         else:
             return [(self.dot.x, i) for i in range(self.dot.y, self.dot.y + self.rang)]
 
 class Board():
-    def __init__(self, size):
+    def __init__(self, size = 6):
         self.size = size                                                                # размерность игрового поля
         self.deck = [[u'\u2022' for y in range(size)] for x in range(size)]             # точки на доске
         self.dots = set([(x, y) for y in range(self.size) for x in range(self.size)])   # точки плоскости доски для определения возможности парковки корабля
+        if size == 6:
+            self.ships = [3,2,2,1,1,1,1]
+            attempt = 2000
+        elif size == 10:
+            self.ships = [4,3,3,2,2,2,1,1,1,1]
+            attempt = 5000
+        tAtt = 0
+        for rang in self.ships:
+            while True:
+                park = self.addShip(Ship(Dot(randint(0, size), randint(0, size)), rang, randint(0,1)))
+                tAtt += 1
+                if park or tAtt > attempt:
+                    break
+            if tAtt > attempt:
+                print('Exit loop. Ship parking ship is bad.')
+                break
 
     @staticmethod
     def emptyDots(Dot):
