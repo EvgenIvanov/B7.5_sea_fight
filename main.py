@@ -1,14 +1,18 @@
 from lib import *
 
+g = Game(6)
+g.start()
 # print(Dot(1, 1))
 # d = Dot(1, 1)
 # print(d)
  
+# a = Board()5 
+# b = Board()
+# b.show(a,b)
 
-b = Board()
-b.show()
 # sh = Ship(Dot(0,0),3,'w')
 # print
+
 # b.addShip(Ship(Dot(0,0),3,'w'))
 # b.show()
 # sh = Ship(Dot(2,4))
