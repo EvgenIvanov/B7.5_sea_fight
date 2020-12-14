@@ -2,6 +2,58 @@ from lib import *
 
 g = Game(6)
 g.start()
+
+# a ='f'
+# print(type(a))
+# xx = int(input())a1
+# 1 1/A1/1A
+# regexp ([1-9]|[1][0])[A-Fa-f]|
+
+# while True:
+#     try:
+#         str_ = input('=>')
+#         if not fullmatch(r'([1-9]|[1][0])[A-Fa-f]|[A-Fa-f]([1][0]|[1-9])', str_):
+#             raise ValueError
+#         str_ = str_.upper()
+#         if ord(str_[0]) > 64:
+#             y = ord(str_[0]) - 65
+#             x = int(str_[1:]) - 1
+#         else:
+#             y = ord(str_[-1]) - 65
+#             x = int(str_[0:-1]) - 1
+#     except ValueError:
+#         print(f'value must be: [1..{size}][A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}]\nor [A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}][1..{size}]')
+#     else:
+#         break
+# print(str_)
+# print('x='+str(x),'y='+str(y))
+# while True:
+#     try:
+
+#         x, y = map(int, input('=>').split())
+#         # x = int(x)
+#         if x < 0 or x > size-1 or y < 0 or y > size-1:
+#             raise ValueError
+#     except ValueError:
+#         if isinstance(x, str):
+#             x = x.lower()
+#             try:
+#                 if len(x) != 1 or not (0 <= (ord(x) - 97) <= size - 1):
+#                     raise ValueError
+#                 x = ord(x) - 97
+#             except ValueError:
+#                 print(f'x and y must be: [0..{size-1}], int() or [A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}]')
+#             else:
+#                 # print('ord=' + str(ord(x)))
+#                 break
+#         else:
+#             print(f'x and y must be: [0..{size-1}], int() or [A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}]')
+#     else:
+#         # print('x=' + str(x))
+#         break
+# print('x='+str(x))
+# g = Game(6)
+# g.start()6
 # print(Dot(1, 1))
 # d = Dot(1, 1)
 # print(d)
