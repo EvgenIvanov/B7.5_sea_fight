@@ -1,4 +1,5 @@
 from random import randint
+from re import fullmatch
 
 class Dot:
     ## фактическая точка игрового поля 
@@ -98,7 +99,7 @@ class Board():
         print('\n Opponent board          Your board  ')
         print('   ----------             --------------')
         str_ = [str(i+1)+' ' for i in range(own.size)]
-        print(f"   {''.join(str_)}             {''.join(str_)}" + 'X'+'×' + u'\u2573' + '¤'+u'\u2022\u25E6\u00B0\u03BF')
+        print(f"   {''.join(str_)}             {''.join(str_)}") # + 'X'+'×' + u'\u2573' + '¤'+u'\u2022\u25E6\u00B0\u03BF')
         for i,row in enumerate(own.deck):
             aliRow = ali.deck[i]
             print(f' {chr(65+i)} ' + ' '.join(row).replace(u'\u2589',u'\u2022') + f'            {chr(65+i)} ' + ' '.join(aliRow)) #.replace(u'\u2589',u'\u2022')) #' ' + row + '\n')
@@ -125,7 +126,26 @@ class Player():
         self.board = Board(size)
 
     def shot(self):
-        return map(int, input('Введите кординаты выстрела: ').split(' '))
+        size = self.size
+        while True:
+            try:
+                str_ = input('=>')
+                if size == 10 and not fullmatch(r'([1-9]|[1][0])[A-Fa-f]|[A-Fa-f]([1][0]|[1-9])', str_):
+                    raise ValueError
+                elif size == 6 and not fullmatch(r'[1-6][A-Fa-f]|[A-Fa-f][1-6]', str_):
+                    raise ValueError  
+                str_ = str_.upper()
+                if ord(str_[0]) > 64:
+                    y = ord(str_[0]) - 65
+                    x = int(str_[1:]) - 1
+                else:
+                    y = ord(str_[-1]) - 65
+                    x = int(str_[0:-1]) - 1
+            except ValueError:
+                print(f'value must be: [1..{size}][A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}]\nor [A..{(chr(65 + size - 1))}a..{(chr(97 + size - 1))}][1..{size}]')
+            else:
+                break
+        return x, y
 
     def shoot(self):
         # делаю выстрел
@@ -171,6 +191,8 @@ class Game():
         print('  welcome to  ')
         print('  sea battle  ')
         print('     game     ')
+        print(' enter shoot: ')
+        print('   A3 or 3A   ')
         print('\nparking ship')
         us = Player(self.size)
         ai = AI(self.size)
