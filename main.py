@@ -1,4 +1,6 @@
 from lib import *
+# Sea Fight v0.1
+# from Evgeny Ivanov
 
 g = Game(6)
 g.start()
